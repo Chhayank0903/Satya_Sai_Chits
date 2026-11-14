@@ -1,0 +1,471 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sai Chit Box</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Mukta:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow column under a sunrise sky. Box and draw button first, then the chit paper with its matching photo, then the private history. */
+:root {
+  --bg: #FFF7EE;
+  --sky-top: #FFBE55;
+  --sky-mid: #FFE3B5;
+  --sun: rgba(255, 238, 176, 0.95);
+  --ray: rgba(255, 248, 220, 0.6);
+  --surface: #FFFFFF;
+  --ink: #3B1410;
+  --maroon: #6B1C12;
+  --muted: #7A5546;
+  --line: #EBD3BC;
+  --accent: #B23A0C;
+  --accent-ink: #FFF8F0;
+  --gold: #C48A14;
+  --gold-soft: #F6E3B0;
+
+  --paper: #FFF9EA;
+  --paper-ink: #3A2012;
+  --paper-muted: #7B5E4D;
+  --rule: #EAD4B2;
+  --margin: #D4625C;
+  --crease: rgba(122, 72, 32, 0.2);
+  --shadow: rgba(60, 20, 4, 0.5);
+
+  --box: #8A4524;
+  --box-dark: #4A230E;
+  --box-light: #B5703A;
+
+  --font-ui: 'Mukta', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-chit: 'Kalam', 'Segoe Print', 'Bradley Hand', cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #170B0A;
+    --sky-top: #5E2610;
+    --sky-mid: #2B120C;
+    --sun: rgba(255, 170, 70, 0.32);
+    --ray: rgba(255, 196, 110, 0.14);
+    --surface: #2A1612;
+    --ink: #FBEBDD;
+    --maroon: #FFD9A3;
+    --muted: #CDB0A0;
+    --line: #4A2C23;
+    --accent: #F2A13B;
+    --accent-ink: #241006;
+    --gold: #E6B450;
+    --gold-soft: #4A3414;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #170B0A;
+  --sky-top: #5E2610;
+  --sky-mid: #2B120C;
+  --sun: rgba(255, 170, 70, 0.32);
+  --ray: rgba(255, 196, 110, 0.14);
+  --surface: #2A1612;
+  --ink: #FBEBDD;
+  --maroon: #FFD9A3;
+  --muted: #CDB0A0;
+  --line: #4A2C23;
+  --accent: #F2A13B;
+  --accent-ink: #241006;
+  --gold: #E6B450;
+  --gold-soft: #4A3414;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background-color: var(--bg);
+  position: relative;
+  background-image: radial-gradient(ellipse 70% 480px at 50% -40px, var(--sun) 0, transparent 70%), linear-gradient(180deg, var(--sky-top) 0, var(--sky-mid) 380px, var(--bg) 780px);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.55;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Rising sun: soft rays fan out from above the page and fade into the sky. */
+body::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 620px; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% -40px, var(--ray) 0 4deg, transparent 4deg 11deg);
+  -webkit-mask-image: linear-gradient(180deg, #000 0, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0, transparent 100%);
+  animation: dawn 9s ease-in-out infinite alternate;
+}
+@keyframes dawn { from { opacity: 0.6; } to { opacity: 1; } }
+.wrap { position: relative; max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+.wrap > * { min-width: 0; }
+
+header { text-align: center; }
+.greet { margin: 0 0 4px; color: var(--maroon); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.8rem; }
+h1 { margin: 0; color: var(--maroon); font-family: var(--font-chit); font-weight: 700; font-size: clamp(2.3rem, 9vw, 3.2rem); line-height: 1.1; text-wrap: balance; }
+.lede { margin: 10px auto 0; color: var(--ink); opacity: 0.85; max-width: 46ch; text-wrap: pretty; }
+
+.stage { display: flex; flex-direction: column; gap: 18px; }
+.box-wrap { position: relative; display: flex; justify-content: center; }
+.box-wrap::before { content: ""; position: absolute; top: 50%; left: 50%; width: min(400px, 100%); aspect-ratio: 1; transform: translate(-50%, -50%); background: radial-gradient(circle, var(--sun) 0, transparent 66%); pointer-events: none; }
+.box { position: relative; z-index: 1; width: min(260px, 70%); height: auto; transform-origin: 50% 92%; }
+.box .shadow { fill: var(--shadow); opacity: 0.3; }
+.box .body { fill: var(--box); }
+.box .plank { stroke: var(--box-dark); stroke-opacity: 0.35; stroke-width: 1.5; fill: none; }
+.box .lid { fill: var(--box-light); }
+.box .slot { fill: var(--box-dark); }
+.box .trim { fill: none; stroke: var(--gold); stroke-width: 3; }
+.box .plate { fill: var(--paper); stroke: var(--gold); stroke-width: 2.5; }
+.box .petal { fill: var(--gold); stroke: var(--box-dark); stroke-width: 0.8; stroke-opacity: 0.5; }
+.box .petal-mid { fill: #E2674A; stroke: var(--box-dark); stroke-width: 0.8; stroke-opacity: 0.5; }
+.box.shake { animation: shake 0.9s ease-in-out; }
+@keyframes shake {
+  0%, 100% { transform: rotate(0) translateX(0); }
+  15% { transform: rotate(-4deg) translateX(-5px); }
+  30% { transform: rotate(4deg) translateX(5px); }
+  45% { transform: rotate(-3deg) translateX(-3px); }
+  60% { transform: rotate(3deg) translateX(3px); }
+  75% { transform: rotate(-1.5deg); }
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-weight: 600; }
+.field .hint { color: var(--muted); font-size: 0.88rem; }
+textarea {
+  width: 100%; min-height: 84px; resize: vertical;
+  padding: 12px 14px; font: inherit; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+}
+textarea::placeholder { color: var(--muted); opacity: 0.85; }
+
+.btn { font: inherit; font-weight: 700; cursor: pointer; min-height: 50px; padding: 10px 22px; border-radius: 8px; border: 1px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 18px -8px var(--accent); }
+.btn-primary:disabled { opacity: 0.65; cursor: default; }
+.btn-quiet { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn-link { background: none; border: 0; color: var(--muted); text-decoration: underline; min-height: 36px; padding: 4px 6px; font: inherit; cursor: pointer; }
+
+.result { min-height: 150px; }
+.placeholder {
+  margin: 0; padding: 36px 22px;
+  border: 1.5px dashed var(--gold); border-radius: 4px;
+  color: var(--muted); font-family: var(--font-chit); font-size: 1.35rem; line-height: 1.4;
+}
+.folded {
+  display: block; margin: 8px auto; width: min(100%, 290px);
+  padding: 38px 20px; border: 0; border-radius: 3px; cursor: pointer;
+  background-color: var(--paper); color: var(--paper-ink);
+  background-image:
+    linear-gradient(90deg, transparent 49.4%, var(--crease) 50%, transparent 50.6%),
+    linear-gradient(0deg, transparent 49.4%, var(--crease) 50%, transparent 50.6%);
+  box-shadow: 0 10px 24px -10px var(--shadow);
+  font-family: var(--font-chit); font-size: 1.45rem; line-height: 1.3;
+  transform: rotate(-2deg);
+  animation: rise 0.5s ease-out;
+}
+@keyframes rise { from { transform: translateY(40px) rotate(-6deg); opacity: 0; } to { transform: translateY(0) rotate(-2deg); opacity: 1; } }
+
+.chit {
+  background: var(--paper); color: var(--paper-ink);
+  border-radius: 3px; box-shadow: 0 16px 34px -14px var(--shadow);
+  border-top: 5px solid var(--gold);
+  transform-origin: top center; animation: unfold 0.5s ease-out;
+  overflow: hidden;
+}
+.chit:focus { outline: none; }
+.chit:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@keyframes unfold { from { transform: scaleY(0.25); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+
+.photo-frame { margin: 16px 16px 0; padding: 8px; background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 3px; text-align: center; }
+.photo { display: block; margin: 0 auto; max-width: 100%; max-height: min(440px, 68vh); width: auto; height: auto; border-radius: 1px; }
+
+.lines { position: relative; padding: 18px 20px 0 58px; margin-top: 10px; background-image: repeating-linear-gradient(transparent 0 35px, var(--rule) 35px 36px); background-origin: content-box; background-clip: padding-box; background-position: 0 18px; }
+.lines::before { content: ""; position: absolute; top: 0; bottom: 0; left: 40px; width: 2px; background: var(--margin); opacity: 0.5; }
+.chit-text { margin: 0; font-family: var(--font-chit); font-size: 1.5rem; line-height: 36px; text-wrap: pretty; overflow-wrap: anywhere; }
+.chit-meta { padding: 12px 20px 16px 58px; color: var(--paper-muted); font-size: 0.88rem; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.toast { min-height: 1.4em; margin: 8px 0 0; color: var(--muted); font-size: 0.9rem; }
+
+.history h2 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; color: var(--maroon); }
+.history .sub { margin: 0 0 8px; color: var(--muted); font-size: 0.9rem; }
+.hlist { list-style: none; margin: 0; padding: 0; }
+.hitem { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+.hthumb { flex: none; width: 64px; height: 64px; object-fit: cover; object-position: center 30%; border-radius: 4px; border: 1px solid var(--gold); background: var(--gold-soft); }
+.hmain { min-width: 0; flex: 1; }
+.hmeta { color: var(--muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+.hq { margin: 4px 0 0; color: var(--muted); font-style: italic; overflow-wrap: anywhere; }
+.htext { margin: 4px 0 0; font-family: var(--font-chit); font-size: 1.25rem; line-height: 1.4; overflow-wrap: anywhere; }
+.hempty { margin: 0; padding: 14px 0; border-top: 1px solid var(--line); color: var(--muted); }
+
+.note { margin: 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; max-width: 60ch; text-wrap: pretty; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="greet">Sai Ram</p>
+    <h1>Sai Chit Box</h1>
+    <p class="lede">Sit quietly for a moment. Think of Swami and hold your question or worry in your heart. When you are ready, draw a chit.</p>
+  </header>
+
+  <section class="stage" aria-label="Draw a chit">
+    <div class="box-wrap">
+      <svg id="box" class="box" viewBox="0 0 240 180" role="img" aria-label="A wooden chit box with a gold lotus on the front">
+        <ellipse class="shadow" cx="120" cy="170" rx="106" ry="8"></ellipse>
+        <rect class="body" x="22" y="64" width="196" height="100" rx="8"></rect>
+        <path class="plank" d="M22 90 H218 M22 140 H218"></path>
+        <rect class="trim" x="26" y="68" width="188" height="92" rx="6"></rect>
+        <rect class="lid" x="12" y="38" width="216" height="34" rx="6"></rect>
+        <rect class="trim" x="12" y="38" width="216" height="34" rx="6"></rect>
+        <rect class="slot" x="78" y="50" width="84" height="9" rx="4.5"></rect>
+        <rect class="plate" x="82" y="88" width="76" height="62" rx="6"></rect>
+        <g transform="translate(120 143)">
+          <path class="petal" d="M0 -8 C8 -16 8 -30 0 -40 C-8 -30 -8 -16 0 -8Z" transform="rotate(-62 0 -8)"></path>
+          <path class="petal" d="M0 -8 C8 -16 8 -30 0 -40 C-8 -30 -8 -16 0 -8Z" transform="rotate(62 0 -8)"></path>
+          <path class="petal" d="M0 -8 C8 -16 8 -30 0 -40 C-8 -30 -8 -16 0 -8Z" transform="rotate(-32 0 -8)"></path>
+          <path class="petal" d="M0 -8 C8 -16 8 -30 0 -40 C-8 -30 -8 -16 0 -8Z" transform="rotate(32 0 -8)"></path>
+          <path class="petal-mid" d="M0 -8 C8 -16 8 -30 0 -42 C-8 -30 -8 -16 0 -8Z"></path>
+        </g>
+      </svg>
+    </div>
+
+    <button id="drawBtn" class="btn btn-primary" type="button">Draw a chit</button>
+  </section>
+
+  <section class="result" aria-live="polite" aria-label="Your chit">
+    <p id="ph" class="placeholder">Your chit will appear here. Take a slow breath first.</p>
+    <button id="folded" class="folded" type="button" hidden>Your chit is ready. Tap to open.</button>
+    <article id="chit" class="chit" tabindex="-1" hidden>
+      <figure id="figure" class="photo-frame" style="margin-bottom:0">
+        <img id="photo" class="photo" alt="" decoding="async">
+      </figure>
+      <div class="lines"><p id="chitText" class="chit-text"></p></div>
+      <div id="chitMeta" class="chit-meta"></div>
+    </article>
+    <div id="actions" class="actions" hidden>
+      <button id="copyBtn" class="btn btn-quiet" type="button">Copy chit</button>
+    </div>
+    <p id="toast" class="toast" role="status"></p>
+  </section>
+
+  <section class="history" aria-labelledby="hh">
+    <h2 id="hh">Chits you have drawn</h2>
+    <p class="sub">Saved on this device only.</p>
+    <div id="hbody"></div>
+    <button id="clearBtn" class="btn-link" type="button" hidden>Clear my history</button>
+  </section>
+
+  <p class="note">This is a devotee’s collection of 230 chit messages, offered for prayer and reflection. It is not an official source. The photo with each chit is chosen to match its message. For health, safety, money or legal matters, please also speak with a doctor, a trusted elder or a qualified professional.</p>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var CHITS = [["A drop of tears shed for Swami never goes waste", [2, 7, 9, 24, 26]], ["Accept things as they come", [31, 14, 37, 36, 10, 34, 15]], ["Admit your mistake", [4, 14, 7, 24, 26]], ["Aim high, soar high", [48, 10, 36, 22, 33, 39, 11]], ["All the best Bangaru", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["All your dreams will be realised", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Always be careful", [25, 46, 44, 23, 39, 6, 22]], ["Always speak the truth", [25, 46, 44, 23, 39, 6, 22]], ["Anger is the worst enemy", [25, 46, 44, 23, 39, 6, 22]], ["As you sow, so shall you reap", [23, 39, 44, 11, 25, 46]], ["Ask for the strength to love Me", [2, 7, 9, 24, 26]], ["Attach yourself to Me", [2, 7, 9, 24, 26]], ["Be a good boy today", [12]], ["Be active", [25, 46, 44, 39, 33, 19, 32]], ["Be an example to others", [11, 10, 33, 39, 44, 36]], ["Be bold and courageous", [48, 10, 36, 22, 33, 39, 11]], ["Be content with what you have", [31, 14, 37, 36, 10, 34, 15]], ["Be humble", [4, 14, 7, 24, 26]], ["Be mature\u2026 bad boy", [12]], ["Be optimistic", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Be organised", [25, 46, 44, 39, 33, 19, 32]], ["Be punctual", [25, 46, 44, 39, 33, 19, 32]], ["Be simple and sincere", [4, 14, 7, 24, 26]], ["Be truthful to yourself", [3, 31, 18, 1, 49]], ["Bear all and say nothing", [53, 18, 17]], ["Believe in yourself and you will achieve success in everything", [48, 10, 36, 22, 33, 39, 11]], ["Bring good name to your parents and Me", [12, 8, 42, 28]], ["Chant 108 Gayatri mantra", [1, 17, 18, 21, 45, 49, 50, 51]], ["Chant Hanuman Chalisa", [1, 17, 18, 21, 45, 49, 50, 51]], ["Chant Sai Gayatri", [1, 17, 18, 21, 45, 49, 50, 51]], ["Chant Suprabhatam being wide awake", [41]], ["Cheer up Bangaru", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Cleanliness is next to godliness", [25, 46, 44, 39, 33, 19, 32]], ["Crying for good washes you and makes you clean", [2, 7, 9, 24, 26]], ["Dedicate every act as an offering to Me", [11, 10, 33, 39, 44, 36]], ["Delay doesn't mean denial. So, pray on", [31, 14, 37, 36, 10, 34, 15]], ["Depend on Me fully", [2, 7, 9, 24, 26]], ["Discipline is the hallmark of a Sai student", [11, 10, 33, 39, 44, 36]], ["Do good, see good and be good", [23, 39, 44, 11, 25, 46]], ["Do Namasmaran", [1, 17, 18, 21, 45, 49, 50, 51]], ["Do not argue with everyone", [53, 18, 17, 21]], ["Do not be lazy", [25, 46, 44, 39, 33, 19, 32]], ["Do not get distracted", [25, 46, 44, 23, 39, 6, 22]], ["Do not gossip", [53, 18, 17, 21]], ["Do not grumble", [53, 18, 17, 21]], ["Do not miss the opportunity given by Me", [25, 46, 44, 23, 39, 6, 22]], ["Do not skip food", [25, 46, 44, 39, 33, 19, 32]], ["Do your best. Sai will do the rest", [11, 10, 33, 39, 44, 36]], ["Don\u2019t become a slave of your senses", [25, 46, 44, 23, 39, 6, 22]], ["Don't sleep after lunch", [25, 46, 44, 39, 33, 19, 32]], ["Don\u2019t be over-confident be self-confident", [48, 10, 36, 22, 33, 39, 11]], ["Don\u2019t bunk lunch", [25, 46, 44, 39, 33, 19, 32]], ["Don\u2019t eat junk food", [25, 46, 44, 39, 33, 19, 32]], ["Don\u2019t miss dinner", [25, 46, 44, 39, 33, 19, 32]], ["Don\u2019t miss lunch", [25, 46, 44, 39, 33, 19, 32]], ["Don\u2019t worry, if you are right", [6, 13, 47, 52, 41, 29, 45, 1]], ["Every time you converse with Me, I listen to you", [0, 19, 22, 30, 32, 33, 3]], ["Expect My dream", [1, 17, 18, 21, 45, 49, 50, 51]], ["Faith can move mountains", [48, 10, 36, 22, 33, 39, 11]], ["First you be. Then teach others. Believe this", [11, 10, 33, 39, 44, 36]], ["Food is God. Don\u2019t waste food", [25, 46, 44, 39, 33, 19, 32]], ["Forgive and forget others' faults", [4, 14, 7, 24, 26]], ["Go & study in the library after classes", [25, 46, 44, 39, 33, 19, 32]], ["Go and make up with whom you fought", [27, 0, 20, 40, 28, 8, 35, 15]], ["Go for an extra round of jogging", [25, 46, 44, 39, 33, 19, 32]], ["Good boy Dunnapotha. Be good", [12]], ["Have Vibhuti. Everything will be fine", [6, 13, 47, 52, 41, 29, 45, 1]], ["Help someone today", [11, 10, 33, 39, 44, 36]], ["Hold My hands and I will lead you", [6, 13, 47, 52, 41, 29, 45, 1]], ["Hugs & kisses from Sai Maa", [27, 0, 20, 40, 28, 8, 35, 15]], ["I am by your side\u2026 always Bangaru", [6, 13, 47, 52, 41, 29, 45, 1]], ["I am listening to you, converse with Me", [32]], ["I am satisfied with you", [27, 0, 20, 40, 28, 8, 35, 15]], ["I am the silent listener to every conversation of yours", [0, 19, 22, 30, 32, 33, 3]], ["I am very proud of you, Bangaru", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["I am waiting for your \u2018Good morning\u2019. So attend Suprabhatam", [41]], ["I am watching you always", [0, 19, 22, 30, 32, 33, 3]], ["I am your best friend", [27, 0, 20, 40, 28, 8, 35, 15]], ["I am your true friend", [27, 0, 20, 40, 28, 8, 35, 15]], ["I have a plan for your life and that is all you need to know", [31, 14, 37, 36, 10, 34, 15]], ["I have chosen you because you are worthy of it", [27, 0, 20, 40, 28, 8, 35, 15]], ["I have given you many talents. Put them to use", [11, 10, 33, 39, 44, 36]], ["I know, I love, I care. Then why this unhappiness?", [27, 0, 20, 40, 28, 8, 35, 15]], ["I love you", [27, 0, 20, 40, 28, 8, 35, 15]], ["I will always be there for you", [6, 13, 47, 52, 41, 29, 45, 1]], ["I will guard you just as the eyelid protects the eye", [6, 13, 47, 52, 41, 29, 45, 1]], ["It is nice to be important. But, it is more important to be nice", [23, 39, 44, 11, 25, 46]], ["Keep Mounam for an hour", [53]], ["Know your purpose. Pray to Sai", [1, 17, 18, 21, 45, 49, 50, 51]], ["Laziness is the rust and dust. Realisations are rest and best", [25, 46, 44, 39, 33, 19, 32]], ["Learn from your mistakes", [4, 14, 7, 24, 26]], ["Leave all your worries to Me.", [2, 7, 9, 24, 26]], ["Less luggage, more comfort, makes the journey a pleasure", [5]], ["Life is a mixture of sorrow and happiness", [31, 14, 37, 36, 10, 34, 15]], ["Listen to your conscience", [3, 31, 18, 1, 49]], ["Love seeks no reward: love is its own reward", [27, 0, 20, 40, 28, 8, 35, 15]], ["My blessings and love are always with you.", [6, 13, 47, 52, 41, 29, 45, 1]], ["My dear child, you need a little more patience", [31, 14, 37, 36, 10, 34, 15]], ["My grace will always protect you", [6, 13, 47, 52, 41, 29, 45, 1]], ["My love for you is that of a thousand mothers", [27, 0, 20, 40, 28, 8, 35, 15]], ["Nothing can separate you from Me", [6, 13, 47, 52, 41, 29, 45, 1]], ["One who gets more, much is expected from him", [11, 10, 33, 39, 44, 36]], ["Pain is an interval between two joys", [31, 14, 37, 36, 10, 34, 15]], ["Past is past. Pay attention to your present", [31, 14, 37, 36, 10, 34, 15]], ["Pleasure is an interval between two pains", [31, 14, 37, 36, 10, 34, 15]], ["Power in you is greater than the problem ahead of you", [48, 10, 36, 22, 33, 39, 11]], ["Practice ceiling on desires", [23, 39, 44, 11, 25, 46]], ["Practice makes a man perfect", [11, 10, 33, 39, 44, 36]], ["Practice what you preach", [11, 10, 33, 39, 44, 36]], ["Prayers can move mountains", [1, 17, 18, 21, 45, 49, 50, 51]], ["Rather than saying, oh God, I have a big problem. Say, oh problem, I have a big God", [48, 10, 36, 22, 33, 39, 11]], ["Read Sai literature", [25, 46, 44, 39, 33, 19, 32]], ["Realise that I am your heartbeat", [3, 31, 18, 1, 49]], ["Reduce your ego", [4, 14, 7, 24, 26]], ["Remember the good that others have done to you", [4, 14, 7, 24, 26]], ["Respect your parents and elders", [12, 8, 42, 28]], ["Rest assured, I will write your exam", [6, 13, 47, 52, 41, 29, 45, 1]], ["Sacrifice your wishes for others", [11, 10, 33, 39, 44, 36]], ["Sai's Bangaru... Cheer up", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Sai's command must be your breath", [11, 10, 33, 39, 44, 36]], ["Save time, money and energy", [25, 46, 44, 39, 33, 19, 32]], ["See God in all", [3, 31, 18, 1, 49]], ["Silence is golden", [53]], ["Speak softly and sweetly", [53]], ["Study well during study hours", [25, 46, 44, 39, 33, 19, 32]], ["Success is sweet but its secret is sweat", [11, 10, 33, 39, 44, 36]], ["Suffering is grace", [31, 14, 37, 36, 10, 34, 15]], ["Swami is proud of you", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Swami knows everything about you", [0, 19, 22, 30, 32, 33, 3]], ["Take care of yourself. I will need you", [27, 0, 20, 40, 28, 8, 35, 15]], ["Take one step. I will take a hundred towards you", [5, 48]], ["Talk less and work more", [53, 18, 17, 21]], ["Tell Me your worries. I will take care", [2, 7, 9, 24, 26]], ["Test is My taste", [31, 14, 37, 36, 10, 34, 15]], ["The duty of a student is to study", [25, 46, 44, 39, 33, 19, 32]], ["The joy that you cause in the heart of God is the only worthwhile achievement", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["The strongest man in the world is the one who stands alone", [48, 10, 36, 22, 33, 39, 11]], ["The will of God will not take you where the grace of God cannot reach you", [6, 13, 47, 52, 41, 29, 45, 1]], ["There is nothing that you & I cannot do together", [48, 10, 36, 22, 33, 39, 11]], ["Think before you act. Offer it to Sai", [14, 34, 37, 38, 18]], ["This is love from your Sai Maa. Believe this.", [27, 0, 20, 40, 28, 8, 35, 15]], ["This too shall pass", [31, 14, 37, 36, 10, 34, 15]], ["To err is human to forgive is divine", [4, 14, 7, 24, 26]], ["Watch your words, actions, thoughts, character and heart", [14, 34, 37, 38, 18]], ["Whatever happens, it is for your good", [31, 14, 37, 36, 10, 34, 15]], ["When prayers go up, blessings come down", [1, 17, 18, 21, 45, 49, 50, 51]], ["Why fear when I am here", [6, 13, 47, 52, 41, 29, 45, 1]], ["Why so upset? Be happy", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Why this castor oil face? Always be happy", [42, 43, 16, 38, 52, 13, 44, 15, 47, 35, 40]], ["Write a letter to Me", [6]], ["Yearn for Me, I shall come", [41]], ["You are grown-up. Be responsible", [11, 10, 33, 39, 44, 36]], ["You are My instrument in use", [11, 10, 33, 39, 44, 36]], ["You are My loving child", [12, 8, 42, 28]], ["You are My sweet child, Bangaru", [12, 8, 42, 28]], ["You are right. Go ahead and face the challenge", [48, 10, 36, 22, 33, 39, 11]], ["You have gained more than you have lost", [31, 14, 37, 36, 10, 34, 15]], ["Your actions in the past are the reasons. Remember Sai will take care", [14, 34, 37, 38, 18]], ["Your availability is more important to Me than your ability", [41, 29, 6, 13, 52]], ["Your heart is My residence. Keep it clean", [3, 31, 18, 1, 49]], ["Your parents are under My protection", [12, 8, 42, 28]], ["Cast all your burdens on Me; I shall bear them.", [2, 7, 9, 24, 26]], ["I am always with you, in you, around you, above you, below you.", [6, 13, 47, 52, 41, 29, 45, 1]], ["Leave everything to My will. Everything happens for your own good.", [31, 14, 37, 36, 10, 34, 15]], ["Do not worry. Swami knows everything and will take care of you.", [6, 13, 47, 52, 41, 29, 45, 1]], ["I never forsake those who hold on to Me.", [2, 7, 9, 24, 26]], ["Surrender completely. When you surrender, I take over.", [2, 7, 9, 24, 26]], ["Your prayer has been heard. Peace be with you.", [1, 17, 18, 21, 45, 49, 50, 51]], ["Have total faith in Me; I will never let you down.", [6, 13, 47, 52, 41, 29, 45, 1]], ["Give up anxiety. Whatever happens is My plan for your growth.", [31, 14, 37, 36, 10, 34, 15]], ["Proceed with faith; My grace is with you.", [48, 10, 36, 22, 33, 39, 11]], ["Yes. Go ahead with a pure heart and full confidence.", [48, 10, 36, 22, 33, 39, 11]], ["Wait with patience. The right time has not yet come.", [31, 14, 37, 36, 10, 34, 15]], ["Now is not the proper time. Pray and wait.", [31, 14, 37, 36, 10, 34, 15]], ["No. This is not good for you right now.", [14, 34, 37, 38, 18]], ["Drop this idea for now. Something better is planned for you.", [31, 14, 37, 36, 10, 34, 15]], ["Be patient. Everything will fall into place at the right moment.", [31, 14, 37, 36, 10, 34, 15]], ["Have Shraddha (faith) and Saburi (patience).", [31, 14, 37, 36, 10, 34, 15]], ["Accept whatever comes as My gift to you.", [31, 14, 37, 36, 10, 34, 15]], ["Take one step toward Me, and I shall take a hundred steps toward you.", [5, 48]], ["Love all, serve all. Help ever, hurt never.", [11, 10, 33, 39, 44, 36]], ["Be good, see good, and do good. This is the way to God.", [23, 39, 44, 11, 25, 46]], ["Duty is God; work is worship.", [11, 10, 33, 39, 44, 36]], ["Speak softly and sweetly. You cannot always oblige, but you can always speak obligingly.", [53]], ["Do not find fault with others; look instead into your own faults.", [4, 14, 7, 24, 26]], ["Start the day with love, fill the day with love, spend the day with love, end the day with love.", [41, 29, 6, 13, 52]], ["Control your anger. Anger is man's greatest enemy.", [53, 18, 17, 21]], ["Practice silence. In the depth of silence, you will hear the voice of God.", [53, 18, 17]], ["Hands that help are holier than lips that pray.", [11, 10, 33, 39, 44, 36]], ["Money comes and goes; morality comes and grows.", [23, 39, 44, 11, 25, 46]], ["Follow the Master (your conscience), face the devil, fight to the end, finish the game.", [3, 31, 18, 1, 49]], ["God is in everyone. See the Divine in all beings.", [3, 31, 18, 1, 49]], ["Keep your heart pure; God resides in a clean heart.", [3, 31, 18, 1, 49]], ["Chant the Divine Name with love and concentration.", [1, 17, 18, 21, 45, 49, 50, 51]], ["You are not the body, not the mind; you are the eternal Atma.", [3, 31, 18, 1, 49]], ["Realize that you and I are one.", [3, 31, 18, 1, 49]], ["Transform your work into worship by offering every action to God.", [11, 10, 33, 39, 44, 36]], ["Attachment is the root cause of all sorrow. Detach and be free.", [23, 39, 44, 11, 25, 46]], ["Where there is faith, there is love; where there is love, there is peace.", [27, 0, 20, 40, 28, 8, 35, 15]], ["Look inward. The happiness you seek outside is already within you.", [3, 31, 18, 1, 49]], ["Difficulties are passing clouds; do not lose heart.", [31, 14, 37, 36, 10, 34, 15]], ["Tests are My way of tasting your devotion and making you stronger.", [31, 14, 37, 36, 10, 34, 15]], ["Face every challenge with a smile and the name of God on your lips.", [48, 10, 36, 22, 33, 39, 11]], ["Do not be discouraged by failure; it is a stepping stone to success.", [48, 10, 36, 22, 33, 39, 11]], ["Strength does not come from the body; it comes from an indomitable will.", [48, 10, 36, 22, 33, 39, 11]], ["When troubles come, hold on tighter to the feet of the Lord.", [2, 7, 9, 24, 26]], ["Never give up. My invisible hand is always guiding you through the storm.", [6, 13, 47, 52, 41, 29, 45, 1]], ["Be brave. Nothing can harm a heart filled with love for God.", [48, 10, 36, 22, 33, 39, 11]], ["Pleasure is an interval between two pains. Rise above both.", [31, 14, 37, 36, 10, 34, 15]], ["Self-confidence is the foundation; self-sacrifice is the life; self-realization is the goal.", [48, 10, 36, 22, 33, 39, 11]], ["Life is a challenge, meet it! Life is a dream, realize it! Life is a game, play it! Life is love, enjoy it!", [48, 10, 36, 22, 33, 39, 11]], ["See no evil, see what is good. Hear no evil, hear what is good. Talk no evil, talk what is good. Think no evil, think what is good. Do no evil, do what is good.", [14, 34, 37, 38, 18]], ["My life is My message.", [23, 39, 44, 11, 25, 46]], ["You must be like the lotus, which grows in the mud yet remains untouched by it.", [23, 39, 44, 11, 25, 46]], ["Education is for life, not merely for a living.", [12]], ["Do your duty sincerely and leave the results to Me.", [11, 10, 33, 39, 44, 36]], ["True happiness lies in union with God.", [3, 31, 18, 1, 49]], ["Every experience is a lesson; every loss is a gain.", [4, 14, 7, 24, 26]], ["Serve your parents with love and respect; they are your first visible Gods.", [12, 8, 42, 28]], ["A pure heart is the temple of God.", [3, 31, 18, 1, 49]], ["Desire is a storm; greed is a whirlpool; pride is a precipice; attachment is an avalanche; egoism is a volcano. Keep away from them.", [23, 39, 44, 11, 25, 46]], ["The end of wisdom is freedom; the end of culture is perfection; the end of knowledge is love; the end of education is character.", [23, 39, 44, 11, 25, 46]], ["When the road is rough, remember that I am walking right beside you.", [5]], ["Silence is the speech of the spiritual seeker.", [53, 18, 17]], ["Do not compare yourself with others. Each flower blooms in its own time.", [23, 39, 44, 11, 25, 46]], ["Forgive and forget. Holding onto anger only harms you.", [4, 14, 7, 24, 26]], ["Time waste is life waste. Use every moment usefully.", [25, 46, 44, 39, 33, 19, 32]], ["Prayer is not asking; it is a longing of the soul.", [1, 17, 18, 21, 45, 49, 50, 51]], ["Keep your mind steady like a flame in a windless place.", [1, 17, 18, 21, 45, 49, 50, 51]], ["Whenever you feel alone, close your eyes and call My name; I am right there.", [1, 17, 18, 21, 45, 49, 50, 51]]];
+  var PHOTOS = [["img/01.jpg", "Swami smiling softly, a golden chain beside him"], ["img/02.jpg", "Swami seated with eyes closed and one hand raised, garlands behind him"], ["img/03.jpg", "Swami's feet resting on a red and white woollen rug, his orange robe beside them"], ["img/04.jpg", "Black and white photo of Swami in profile, one hand over his heart"], ["img/05.jpg", "Swami with his head bowed gently, in a sepia photograph"], ["img/06.jpg", "Swami sitting by a roadside milestone, wearing sunglasses and a coat"], ["img/07.jpg", "Swami smiling with his hand raised in blessing, holding a letter"], ["img/08.jpg", "Swami's feet beneath his orange robe"], ["img/09.jpg", "Swami's smiling face, close up"], ["img/10.jpg", "Swami's feet adorned with red roses and turmeric"], ["img/11.jpg", "Swami seated in a red chair, relaxed and looking ahead"], ["img/12.jpg", "Swami seated in a red cloak near a Krishna statue"], ["img/13.jpg", "Swami smiling as he stands with a young boy in front of him"], ["img/14.jpg", "Swami waving with both hands, smiling"], ["img/15.jpg", "Swami resting his chin on his hand, thinking"], ["img/16.jpg", "Swami relaxing in white robes on a cushioned seat, smiling"], ["img/17.jpg", "Swami smiling with a finger on his cheek, garlands behind him"], ["img/18.jpg", "Swami with eyes closed and a hand raised near his forehead"], ["img/19.jpg", "Swami with eyes closed, a finger resting on his cheek"], ["img/20.jpg", "Swami looking steadily ahead, a golden chain beside him"], ["img/21.jpg", "Swami smiling warmly with a golden chain nearby"], ["img/22.jpg", "Swami with eyes closed, one hand raised, against a dark background"], ["img/23.jpg", "Swami glancing to the side in a calm portrait"], ["img/24.jpg", "Black and white photo of Swami speaking with both hands raised"], ["img/25.jpg", "Swami's feet resting beneath a yellow robe"], ["img/26.jpg", "Swami in profile with one finger raised, speaking"], ["img/27.jpg", "Swami's feet on a footrest, a red rose on the floor"], ["img/28.jpg", "Black and white photo of Swami's smiling face"], ["img/29.jpg", "Swami looking up with a gentle smile"], ["img/30.jpg", "Swami in white, hands raised gently in front of him"], ["img/31.jpg", "Swami looking at the camera against a red backdrop"], ["img/32.jpg", "Swami seated with his hands folded, smiling quietly"], ["img/33.jpg", "Swami looking back over his shoulder beside a microphone"], ["img/34.jpg", "Swami in a yellow shirt, seated and calm"], ["img/35.jpg", "Swami with a finger near his nose, looking thoughtful"], ["img/36.jpg", "Swami smiling warmly in an orange robe"], ["img/37.jpg", "Swami softly clapping, a Ganesha statue and flowers behind him"], ["img/38.jpg", "Swami with a finger at his cheek, looking thoughtful"], ["img/39.jpg", "Swami smiling with his hand at his chin"], ["img/40.jpg", "Swami speaking, with a lotus-shaped ceiling above"], ["img/41.jpg", "Swami with a gentle, squinting smile"], ["img/42.jpg", "Swami in an orange robe saluting from a doorway"], ["img/43.jpg", "Swami laughing with his hand at his mouth"], ["img/44.jpg", "Swami laughing joyfully"], ["img/45.jpg", "Swami seated on a sofa, gesturing as he speaks"], ["img/46.jpg", "Swami with eyes closed and a hand raised"], ["img/47.jpg", "Swami smiling with one finger raised"], ["img/48.jpg", "Swami smiling with both hands raised"], ["img/49.jpg", "Swami in sunglasses, smiling"], ["img/50.jpg", "Swami with eyes closed, one hand raised before his face, flowers behind"], ["img/51.jpg", "Swami with eyes closed, one hand raised, against a dark background"], ["img/52.jpg", "Swami with eyes closed, a hand at his face, a golden rail in front"], ["img/53.jpg", "Swami smiling with his hand raised, flower garlands behind him"], ["img/54.jpg", "Swami with a finger to his lips, palm leaves behind him"]];
+  var KEY = 'saiChitBoxHistory.v2';
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var el = function (id) { return document.getElementById(id); };
+
+  var box = el('box'), drawBtn = el('drawBtn');
+  var ph = el('ph'), folded = el('folded'), chit = el('chit');
+  var figure = el('figure'), photo = el('photo');
+  var chitText = el('chitText'), chitMeta = el('chitMeta');
+  var actions = el('actions'), copyBtn = el('copyBtn'), toast = el('toast');
+  var hbody = el('hbody'), clearBtn = el('clearBtn');
+
+  var state = { phase: 'idle', n: null, p: null };
+  var history = load();
+  var toastTimer = null, clearTimer = null, clearArmed = false;
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      var a = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(a)) return [];
+      return a.filter(function (e) {
+        return e && typeof e.n === 'number' && e.n >= 1 && e.n <= CHITS.length;
+      });
+    } catch (err) { return []; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(history.slice(0, 60))); } catch (err) {}
+  }
+  function rand(max) {
+    try {
+      var a = new Uint32Array(1);
+      window.crypto.getRandomValues(a);
+      return a[0] % max;
+    } catch (err) { return Math.floor(Math.random() * max); }
+  }
+  function pickChit() {
+    var recent = history.slice(0, 10).map(function (e) { return e.n; });
+    if (state.n) recent.push(state.n);
+    var pool = [];
+    for (var i = 1; i <= CHITS.length; i++) if (recent.indexOf(i) === -1) pool.push(i);
+    if (!pool.length) for (var j = 1; j <= CHITS.length; j++) pool.push(j);
+    return pool[rand(pool.length)];
+  }
+  function pickPhoto(n) {
+    var pool = CHITS[n - 1][1];
+    var recent = history.slice(0, 3).map(function (e) { return e.p; });
+    if (state.p !== null) recent.push(state.p);
+    var fresh = pool.filter(function (p) { return recent.indexOf(p) === -1; });
+    if (!fresh.length) fresh = pool.filter(function (p) { return p !== state.p; });
+    if (!fresh.length) fresh = pool;
+    return fresh[rand(fresh.length)];
+  }
+  function fmt(ts) {
+    try {
+      return new Date(ts).toLocaleString(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    } catch (err) { return ''; }
+  }
+  function say(msg) {
+    toast.textContent = msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.textContent = ''; }, 3000);
+  }
+
+  function draw() {
+    if (state.phase === 'drawing') return;
+    state.phase = 'drawing';
+    drawBtn.disabled = true;
+    drawBtn.textContent = 'Drawing…';
+    ph.hidden = true; folded.hidden = true; chit.hidden = true; actions.hidden = true;
+    toast.textContent = '';
+    box.classList.remove('shake');
+    void box.getBoundingClientRect();
+    if (!reduce) box.classList.add('shake');
+
+    var n = pickChit();
+    var p = pickPhoto(n);
+    figure.hidden = false;
+    photo.onerror = function () { figure.hidden = true; };
+    photo.alt = PHOTOS[p][1];
+    photo.src = PHOTOS[p][0];
+
+    setTimeout(function () {
+      box.classList.remove('shake');
+      state.n = n; state.p = p;
+      state.phase = 'folded';
+      folded.hidden = false;
+      drawBtn.disabled = false;
+      drawBtn.textContent = 'Draw another chit';
+      folded.focus();
+    }, reduce ? 150 : 1000);
+  }
+
+  function openChit() {
+    if (state.phase !== 'folded') return;
+    state.phase = 'open';
+    var n = state.n, p = state.p, now = Date.now();
+    chitText.textContent = CHITS[n - 1][0];
+    chitMeta.textContent = 'Chit ' + n + ' of ' + CHITS.length + ' · ' + fmt(now);
+    folded.hidden = true;
+    chit.hidden = false;
+    actions.hidden = false;
+    history.unshift({ n: n, p: p, d: now });
+    save();
+    renderHistory();
+    chit.focus();
+  }
+
+  function copyChit() {
+    var text = chitText.textContent;
+    function fallback() {
+      try {
+        var r = document.createRange();
+        r.selectNodeContents(chitText);
+        var s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+      } catch (err) {}
+      say('The chit is selected. Use your device’s copy option.');
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { say('Copied.'); }, fallback);
+      } else { fallback(); }
+    } catch (err) { fallback(); }
+  }
+
+  function renderHistory() {
+    hbody.textContent = '';
+    if (!history.length) {
+      var p0 = document.createElement('p');
+      p0.className = 'hempty';
+      p0.textContent = 'Nothing here yet. Each chit you open will be kept in this list.';
+      hbody.appendChild(p0);
+      clearBtn.hidden = true;
+      return;
+    }
+    var ul = document.createElement('ul');
+    ul.className = 'hlist';
+    history.slice(0, 30).forEach(function (e) {
+      var li = document.createElement('li');
+      li.className = 'hitem';
+      if (typeof e.p === 'number' && PHOTOS[e.p]) {
+        var im = document.createElement('img');
+        im.className = 'hthumb';
+        im.alt = '';
+        im.loading = 'lazy';
+        im.src = PHOTOS[e.p][0];
+        im.onerror = function () { im.hidden = true; };
+        li.appendChild(im);
+      }
+      var main = document.createElement('div');
+      main.className = 'hmain';
+      var m = document.createElement('div');
+      m.className = 'hmeta';
+      m.textContent = 'Chit ' + e.n + ' · ' + fmt(e.d);
+      main.appendChild(m);
+      if (e.q) {
+        var qq = document.createElement('p');
+        qq.className = 'hq';
+        qq.textContent = 'You asked: ' + e.q;
+        main.appendChild(qq);
+      }
+      var t = document.createElement('p');
+      t.className = 'htext';
+      t.textContent = CHITS[e.n - 1][0];
+      main.appendChild(t);
+      li.appendChild(main);
+      ul.appendChild(li);
+    });
+    hbody.appendChild(ul);
+    clearBtn.hidden = false;
+  }
+
+  function clearHistory() {
+    if (!clearArmed) {
+      clearArmed = true;
+      clearBtn.textContent = 'Tap again to clear everything';
+      clearTimer = setTimeout(function () {
+        clearArmed = false;
+        clearBtn.textContent = 'Clear my history';
+      }, 4000);
+      return;
+    }
+    clearTimeout(clearTimer);
+    clearArmed = false;
+    clearBtn.textContent = 'Clear my history';
+    history = [];
+    save();
+    renderHistory();
+  }
+
+  drawBtn.addEventListener('click', draw);
+  folded.addEventListener('click', openChit);
+  copyBtn.addEventListener('click', copyChit);
+  clearBtn.addEventListener('click', clearHistory);
+  renderHistory();
+})();
+</script>
+
+</body></html>
